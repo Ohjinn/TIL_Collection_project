@@ -1,4 +1,4 @@
-*{
+* {
     font-family: "Stylish", sans-serif;
 }
 
@@ -12,40 +12,40 @@
 }
 
 .banner {
-            width: 100%;
-            height: 460px;
+    width: 100%;
+    height: 460px;
 
-            background-color: white;
-            background-image: url("logo.JPG");
+    background-color: white;
+    background-image: url("logo.JPG");
 
-            background-position: center;
-            background-size: contain;
-            background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
 
-            cursor: pointer;
+    cursor: pointer;
 }
 
 .weather {
     border: 1px solid darkblue;
     float: left;
     width: 33.3%;
-    padding:40px
+    padding: 40px
 }
 
-.searchbar{
+.searchbar {
     margin-left: 20%;
     margin-right: 20%;
     width: 60%;
     padding: 20px;
 }
 
-.hotboxs{
+.hotboxs {
     display: flex;
     width: 12rem;
     margin: 22px;
     padding: 5px;
 }
 
-.hotbox{
+.hotbox {
 
 }
