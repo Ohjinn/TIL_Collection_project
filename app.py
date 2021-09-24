@@ -8,12 +8,10 @@ app = Flask(__name__)
 client = MongoClient("mongodb://localhost:27017/")
 db = client.dbTil
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
-
-
-
 
 
 if __name__ == "__main__":
