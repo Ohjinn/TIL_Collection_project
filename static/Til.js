@@ -1,3 +1,4 @@
+
 // $(document).ready(function () {
 //     getBaseCardsInfo();
 // });
@@ -29,15 +30,23 @@
 // function reset() {
 //     location.reload();
 // }
-
-
+=======
 $(document).ready(function () {
     showLocation();
+    getBaseCardsInfo();
 });
 
-function reset() {
-    location.reload();
+
+function getBaseCardsInfo(){
+    $.ajax({
+        type : "GET",
+        url : "recentCrawling",
+        data : {},
+        success: function (response){
+        }
+    })
 }
+
 function showLocation(position) {   // 위치 정보 호출 성공시
     let latitude = position.coords.latitude   // 위도
     let longitude = position.coords.longitude  // 경도
@@ -87,3 +96,19 @@ window.addEventListener('load', () => {
         window.navigator.geolocation.getCurrentPosition(showLocation, showError)
     }
 })
+
+function makeCard(cardInfo){
+    let tempHtml = `<div class="card hotboxs">
+                        <img class="card-img-top card-rows" src="../static/tistoryImage.ico" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">${cardInfo['name']}</h5>
+                            <p class="card-text">주소</p>
+                            <a href="#" class="btn btn-dark">Go somewhere</a>
+                        </div>
+                    </div>`
+    $("#addingBox").append(tempHtml);
+}
+
+function reset() {
+    location.reload();
+}
