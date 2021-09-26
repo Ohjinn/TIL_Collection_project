@@ -30,7 +30,6 @@
 // function reset() {
 //     location.reload();
 // }
-=======
 $(document).ready(function () {
     showLocation();
     getBaseCardsInfo();

@@ -1,8 +1,8 @@
 from flask import Flask, render_template, jsonify, request
 from pymongo import MongoClient
-import requests, time, schedule, atexit
+import requests
 from bs4 import BeautifulSoup
-from apscheduler.schedulers.background import BackgroundScheduler
+
 
 app = Flask(__name__)
 
