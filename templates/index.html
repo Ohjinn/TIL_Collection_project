@@ -39,11 +39,13 @@
     <div class="banner" onclick="window.location.href = '/'">
     </div>
     <!--날씨 배너-->
-    <div style="margin: 30px 0px 20px 0px">
-        <div class="weather"><h3>날씨</h3></div>
-        <div class="weather" id = "weather">기온<span class="tempr" id="tempr"></span></div>
-        <div class="weather">이미지<img class="wicon" id="wicon" src=""></div>
+    <div class="weather">
+        <div class="weather_title"><p style="font-weight: bold; font-size: 35px">날씨 </p></div>
+        <div class="weather_temp" style="padding-top: 20px">기온 <span class="tempr" id="tempr"></span></div>
+        <div class="weather_img">이미지 <img class="wicon" id="wicon" src=""></div>
     </div>
+    <div id="weather_comment" style="font-size: 35pt; text-align: center"></div>
+
     <!--검색-->
     <div class="input-group mb-3 searchbar">
         <input type="text" class="form-control" placeholder="이름을 입력하세요" style="text-align: center;">

@@ -26,10 +26,17 @@
 }
 
 .weather {
-    border: 1px solid darkblue;
+    text-align: center;
+    margin: 30px 0px 20px 0px;
+    font-size: 20px;
+}
+
+.weather_title, .weather_temp, .weather_img {
+    border: 1px solid black;
     float: left;
     width: 33.3%;
-    padding: 40px
+    height: 70px;
+    padding-top: 10px;
 }
 
 .searchbar {
