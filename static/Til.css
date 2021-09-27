@@ -32,7 +32,6 @@
 }
 
 .weather_title, .weather_temp, .weather_img {
-    border: 1px solid black;
     float: left;
     width: 33.3%;
     height: 70px;
