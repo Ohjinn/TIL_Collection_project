@@ -1,20 +1,3 @@
-
-// $(document).ready(function () {
-//     getBaseCardsInfo();
-// });
-//
-// function getBaseCardsInfo(){
-//     $.ajax({
-//         type : "GET",
-//         url : "recentCrawling",
-//         data : {},
-//         success: function (response){
-//
-//         }
-//     })
-// }
-//
-//
 // function makeCard(cardInfo){
 //     let tempHtml = `<div class="card hotboxs">
 //                         <img class="card-img-top card-rows" src="../static/tistoryImage.ico" alt="Card image cap">
@@ -31,17 +14,41 @@
 //     location.reload();
 // }
 $(document).ready(function () {
-    showLocation();
     getBaseCardsInfo();
+    getCards()
+    showLocation();
+
 });
 
 
 function getBaseCardsInfo(){
     $.ajax({
         type : "GET",
-        url : "recentCrawling",
+        url : `/recentCrawling`,
         data : {},
         success: function (response){
+            console.log(response)
+        }
+    })
+}
+
+function getCards(){
+    $.ajax({
+        type : "GET",
+        url : `/sorted`,
+        data : {},
+        success:function (response){
+            velogCards = response['velogcards']
+            tistoryCards = response['tistorycards']
+            $("#velog-box").empty();
+            velogCards.forEach(function (velogCards){
+                makeVelogCard(velogCards);
+            });
+
+            $("#tistory-box").empty();
+            tistoryCards.forEach(function(tistoryCards){
+                makeTistoryCard(tistoryCards)
+            });
         }
     })
 }
@@ -96,16 +103,28 @@ window.addEventListener('load', () => {
     }
 })
 
-function makeCard(cardInfo){
+function makeVelogCard(cards){
     let tempHtml = `<div class="card hotboxs">
-                        <img class="card-img-top card-rows" src="../static/tistoryImage.ico" alt="Card image cap">
+                        <img class="card-img-top card-rows" src="${cards['pic']}" alt="Card image cap">
                         <div class="card-body">
-                            <h5 class="card-title">${cardInfo['name']}</h5>
-                            <p class="card-text">주소</p>
-                            <a href="#" class="btn btn-dark">Go somewhere</a>
+                            <h5 class="card-title">${cards['name']}</h5>
+                            <p class="card-text">${cards['url']}</p>
+                            <a href="${cards['url']}" class="btn btn-dark">바로가기</a>
                         </div>
                     </div>`
-    $("#addingBox").append(tempHtml);
+    $("#velog-box").append(tempHtml);
+}
+
+function makeTistoryCard(cards){
+    let tempHtml = `<div class="card hotboxs">
+                        <img class="card-img-top card-rows" src="${cards['pic']}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">${cards['name']}</h5>
+                            <p class="card-text">${cards['url']}</p>
+                            <a href="${cards['url']}" class="btn btn-dark">바로가기</a>
+                        </div>
+                    </div>`
+    $("#tistory-box").append(tempHtml);
 }
 
 function reset() {
