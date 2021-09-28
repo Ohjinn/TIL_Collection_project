@@ -117,3 +117,44 @@ function makeTistoryCard(cards){
 function reset() {
     location.reload();
 }
+
+//검색
+function search() {
+    let txt = $("#searchtxt").val()
+
+    $.ajax({
+        type: "GET",
+        url: "/search?txt=" + txt,
+        data: {},
+        success: function (response) {
+            console.log(response)
+            alert(response.name)
+
+            $("#flush").empty();
+
+            if (txt == name) {
+
+               // $("#flush").empty();
+               //  name.forEach(function (name){
+               //  makeCard(name);
+            });
+
+
+
+            }
+
+function makeCard(name) {
+    let tempHtml = `<div class="card hotboxs">
+                        <img class="card-img-top card-rows" src="${pic}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">${name}</h5>
+                            <p class="card-text">${url}</p>
+                            <a href="${url}" class="btn btn-dark">바로가기</a>
+                        </div>
+                    </div>`
+    $("#flush").append(tempHtml);
+}
+        }
+
+    })
+}

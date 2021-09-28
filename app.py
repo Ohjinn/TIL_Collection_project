@@ -121,5 +121,12 @@ def titleCrawling():
 
     return jsonify('blog searching clear!')
 
+@app.route('/search', methods=['GET'])
+def search():
+    txt = request.args.get("txt")
+    userdb = db.userInfo.find_one({'name':txt},{'_id':False})
+    return (userdb)
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
