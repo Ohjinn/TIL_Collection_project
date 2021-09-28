@@ -120,7 +120,8 @@ function search() {
                             <p class="card-text">${response['url']}</p>
                             <a href="${response['url']}" class="btn btn-dark">바로가기</a>
                         </div>
-                    </div>`
+                    </div>
+                    <button onclick="window.location.href = '/'" type="button">메인으로</button>\`
                 $("#flush").append(tempHtml);
             }
         }
