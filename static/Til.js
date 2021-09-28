@@ -1,21 +1,8 @@
 $(document).ready(function () {
-    getBaseCardsInfo();
     getCards()
     showLocation();
 
 });
-
-
-function getBaseCardsInfo() {
-    $.ajax({
-        type : "GET",
-        url : `/recentCrawling`,
-        data : {},
-        success: function (response){
-            console.log(response)
-        }
-    })
-}
 
 function getCards(){
     $.ajax({
@@ -112,6 +99,32 @@ function makeTistoryCard(cards){
                         </div>
                     </div>`
     $("#tistory-box").append(tempHtml);
+}
+
+
+//검색
+function search() {
+    let txt = $("#searchtxt").val()
+    $.ajax({
+        type: "GET",
+        url: "/search?txt=" + txt,
+        data: {},
+        success: function (response) {
+            $("#flush").empty();
+
+            if (txt == response.name) {
+                let tempHtml = `<div class="card hotboxs">
+                        <img class="card-img-top card-rows" src="${response['pic']}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">${response['name']}</h5>
+                            <p class="card-text">${response['url']}</p>
+                            <a href="${response['url']}" class="btn btn-dark">바로가기</a>
+                        </div>
+                    </div>`
+                $("#flush").append(tempHtml);
+            }
+        }
+    });
 }
 
 function reset() {
