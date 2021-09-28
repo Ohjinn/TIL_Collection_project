@@ -129,12 +129,6 @@ def titleCrawling():
         db.userStack.insert_one({'name' : tempname})
 
 
-@app.route('/search', methods=['GET'])
-def search():
-    txt = request.args.get("txt")
-    userdb = db.userInfo.find_one({'name': txt}, {'_id': False})
-    return userdb
-
 
 
 #검색
