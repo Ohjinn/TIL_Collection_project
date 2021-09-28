@@ -121,40 +121,29 @@ function reset() {
 //검색
 function search() {
     let txt = $("#searchtxt").val()
-
     $.ajax({
         type: "GET",
         url: "/search?txt=" + txt,
         data: {},
         success: function (response) {
-            console.log(response)
-            alert(response.name)
-
             $("#flush").empty();
 
-            if (txt == name) {
-
-               // $("#flush").empty();
-               //  name.forEach(function (name){
-               //  makeCard(name);
-            });
-
-
-
+            if (txt == response.name) {
+                let tempHtml = `<div class="card hotboxs">
+                                    <img class="card-img-top card-rows" src="${response['pic']}" alt="Card image cap">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${response['name']}</h5>
+                                        <p class="card-text">${response['url']}</p>
+                                        <a href="${response['url']}" class="btn btn-dark">바로가기</a>
+                                    </div>
+                                </div>
+                                <button onclick="window.location.href = '/'" type="button">메인으로</button>`
+                $("#flush").append(tempHtml);
             }
-
-function makeCard(name) {
-    let tempHtml = `<div class="card hotboxs">
-                        <img class="card-img-top card-rows" src="${pic}" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">${name}</h5>
-                            <p class="card-text">${url}</p>
-                            <a href="${url}" class="btn btn-dark">바로가기</a>
-                        </div>
-                    </div>`
-    $("#flush").append(tempHtml);
-}
         }
+    });
+}
 
-    })
+function reset() {
+    location.reload();
 }
