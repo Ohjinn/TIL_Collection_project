@@ -1,21 +1,8 @@
 $(document).ready(function () {
-    getBaseCardsInfo();
     getCards()
     showLocation();
 
 });
-
-
-function getBaseCardsInfo() {
-    $.ajax({
-        type : "GET",
-        url : `/recentCrawling`,
-        data : {},
-        success: function (response){
-            console.log(response)
-        }
-    })
-}
 
 function getCards(){
     $.ajax({

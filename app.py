@@ -3,18 +3,27 @@ from pymongo import MongoClient
 import requests
 import time
 from bs4 import BeautifulSoup
+from flask_apscheduler import APScheduler
 
+class Config:
+    SCHEDULER_API_ENABLED = True
 
 app = Flask(__name__)
+app.config.from_object(Config())
 
 client = MongoClient("mongodb://localhost:27017/")
 db = client.dbTil
 
-# sched = BackgroundScheduler(daemon=True)
-#
-# sched.add_job(titleCrawling, 'cron', week='1-53', day_of_week='0-6', hour='21')
-#
-# sched.start()
+"""
+주기적 실행을 위한 flask-apscheduler 라이브러리 (https://viniciuschiele.github.io/flask-apscheduler/rst/usage.html)
+"""
+scheduler = APScheduler()
+scheduler.init_app(app)
+scheduler.start()
+
+@scheduler.task('interval', id='Craw', seconds=900, misfire_grace_time=900)
+def autocraw():
+    titleCrawling()
 
 @app.route('/')
 def index():
@@ -43,8 +52,8 @@ def sorting():
 """
 웹 크롤링을 위한 컨트롤러. 일정시간마다 실행되게 하는 구현 필
 """
-@app.route('/recentCrawling', methods=['GET'])
 def titleCrawling():
+    print('autoCrawling')
     users = list(db.userInfo.find({}, {'_id': False}))
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'
@@ -119,7 +128,6 @@ def titleCrawling():
         db.userStack.delete_one({'name' : tempname})
         db.userStack.insert_one({'name' : tempname})
 
-    return jsonify('blog searching clear!')
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
