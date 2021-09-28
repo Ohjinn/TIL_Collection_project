@@ -21,7 +21,7 @@ scheduler = APScheduler()
 scheduler.init_app(app)
 scheduler.start()
 
-@scheduler.task('interval', id='Craw', seconds=900, misfire_grace_time=900)
+@scheduler.task('interval', id='autocraw', seconds=900, misfire_grace_time=900)
 def autocraw():
     titleCrawling()
 
@@ -127,6 +127,13 @@ def titleCrawling():
         tempname = x
         db.userStack.delete_one({'name' : tempname})
         db.userStack.insert_one({'name' : tempname})
+
+
+@app.route('/search', methods=['GET'])
+def search():
+    txt = request.args.get("txt")
+    userdb = db.userInfo.find_one({'name': txt}, {'_id': False})
+    return userdb
 
 
 if __name__ == "__main__":
