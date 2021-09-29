@@ -121,7 +121,7 @@ function search() {
                             <a href="${response['url']}" class="btn btn-dark">바로가기</a>
                         </div>
                     </div>
-                    <button onclick="window.location.href = '/'" type="button">메인으로</button>\`
+                    <button onclick="window.location.href = '/'" type="button">메인으로</button>`
                 $("#flush").append(tempHtml);
             }
         }

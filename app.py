@@ -21,8 +21,9 @@ scheduler = APScheduler()
 scheduler.init_app(app)
 scheduler.start()
 
-@scheduler.task('interval', id='autocraw', seconds=900, misfire_grace_time=900)
+@scheduler.task('interval', id='autocraw', seconds=30, misfire_grace_time=900)
 def autocraw():
+    print('craw')
     titleCrawling()
 
 @app.route('/')
@@ -63,7 +64,7 @@ def titleCrawling():
         tempname = x['name']
         tempurl = x['url']
 
-        #벨로그 크롤링
+        # 벨로그 크롤링
         if "velog" in tempurl:
             response = requests.get(tempurl)
             html = response.text
@@ -84,25 +85,70 @@ def titleCrawling():
             for title in titles:
                 newlist.append({'name': tempname, 'title': title.text})
 
-        #티스토리 크롤링
+        # 티스토리 크롤링
         if "tistory" in tempurl:
             response = requests.get(tempurl)
             html = response.text
             soup = BeautifulSoup(html, 'html.parser')
             title = soup.select_one('ul.list_horizontal')
-            if title is None:
+            if sys.getsizeof(title) < 100:
                 title = soup.select('ul.list_category > li')
                 for titles in title:
                     detail_title = titles.select_one('div.info > strong.name')
                     newlist.append({'name': tempname, 'title': detail_title.text})
 
-            else:
+            if sys.getsizeof(title) < 100:
+                title = soup.select('div.box-article > article')
+                for titles in title:
+                    detail_title = titles.select_one('a.link-article > strong')
+                    newlist.append({'name': tempname, 'title': detail_title.text})
+
+            if sys.getsizeof(title) < 100:
+                title = soup.select('div.article_skin > div.list_content')
+                for titles in title:
+                    detail_title = titles.select_one('a.link_post > strong')
+                    newlist.append({'name': tempname, 'title': detail_title.text})
+
+            if sys.getsizeof(title) < 100:
+                title = soup.select('div.inner > ul > li')
+                for titles in title:
+                    detail_title = titles.select_one('span.title')
+                    newlist.append({'name': tempname, 'title': detail_title.text})
+
+            if sys.getsizeof(title) < 100:
+                title = soup.select('div.inner > div.post-item')
+                for titles in title:
+                    detail_title = titles.select_one('span.title')
+                    newlist.append({'name': tempname, 'title': detail_title.text})
+
+            if sys.getsizeof(title) < 100:
+                title = soup.select('article.entry')
+                for titles in title:
+                    detail_title = titles.select_one('div.list-body')
+                    detail_title = detail_title.select_one('h3')
+                    newlist.append({'name': tempname, 'title': detail_title.text})
+
+            if sys.getsizeof(title) < 100:
+                title = soup.select('div.area-common > article.article-type-common')
+                for titles in title:
+                    detail_title = titles.select_one('strong.title')
+                    newlist.append({'name': tempname, 'title': detail_title.text})
+
+            if sys.getsizeof(title) < 100:
+                title = soup.select('div.wrap_content > div.content_list')
+                for titles in title:
+                    detail_title = titles.select_one('strong.txt_title')
+                    newlist.append({'name': tempname, 'title': detail_title.text})
+
+            if sys.getsizeof(title) < 100:
                 title = title.select('li')
                 for titles in title:
                     detail_title = titles.select_one('div.box_contents > a')
                     newlist.append({'name': tempname, 'title': detail_title.text})
 
-        #크롤링 페이지를 켜기 위한 딜레이
+            if sys.getsizeof(title) < 100:
+
+        # 크롤링 페이지를 켜기 위한 딜레이
         time.sleep(0.5)
 
     #최근에 저장한 타이틀 목록을 불러오고 또 최근에 글을 쓴 사람이 뒤쪽 순번에 들어가있는 db를 불러온다.
@@ -128,12 +174,13 @@ def titleCrawling():
         db.userStack.insert_one({'name' : tempname})
 
 
+#검색
 @app.route('/search', methods=['GET'])
 def search():
     txt = request.args.get("txt")
-    userdb = db.userInfo.find_one({'name': txt}, {'_id': False})
-    return userdb
-
+    userdb = db.userInfo.find_one({'name':txt},{'_id':False})
+    return jsonify(userdb)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
