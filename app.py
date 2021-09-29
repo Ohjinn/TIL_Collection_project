@@ -204,6 +204,35 @@ def search():
     userdb = db.userInfo.find_one({'name':txt},{'_id':False})
     return jsonify(userdb)
 
+#리뷰
+@app.route('/review', methods=['POST'])
+def modalReview():
+
+    user_receive = request.form['user_give']
+    review_receive = request.form['review_give']
+
+    doc = {
+
+        'user':user_receive,
+        'review':review_receive
+
+    }
+    db.tilreview.insert_one(doc)
+
+    return jsonify({'msg':'저장되었습니다!'})
+
+@app.route('/reviewTarget', methods=['POST'])
+def modalTarget():
+    target_receive = request.form['target_give']
+
+    doc = {
+
+        'target': target_receive
+
+    }
+    db.tilreview.insert_one(doc)
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
 
