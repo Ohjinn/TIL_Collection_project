@@ -138,6 +138,35 @@ function search() {
     });
 }
 
+//리뷰
+function getreview() {
+    let user = $('#user').val()
+    let review = $('#review').val()
+
+    $.ajax({
+        type: "POST",
+        url: "/review",
+        data: {user_give:user,review_give:review},
+        success: function (response) {
+            alert(response["msg"]);
+            window.location.reload();
+
+        }
+    })
+}
+
+function getTarget(name) {
+
+    alert(name)
+    // $.ajax({
+    //     type: "POST",
+    //     url: "/review",
+    //     data: {target_give: name},
+    //     success: function (response) {
+    //     }
+    // })
+}
+
 function reset() {
     location.reload();
 }
