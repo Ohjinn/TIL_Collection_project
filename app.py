@@ -2,8 +2,11 @@ from flask import Flask, render_template, jsonify, request
 from pymongo import MongoClient
 import requests
 import time
+import sys
+import urllib
 from bs4 import BeautifulSoup
 from flask_apscheduler import APScheduler
+
 
 class Config:
     SCHEDULER_API_ENABLED = True
@@ -21,14 +24,36 @@ scheduler = APScheduler()
 scheduler.init_app(app)
 scheduler.start()
 
-@scheduler.task('interval', id='autocraw', seconds=30, misfire_grace_time=900)
+@scheduler.task('interval', id='autocraw', seconds=900, misfire_grace_time=900)
 def autocraw():
-    print('craw')
     titleCrawling()
+
+@scheduler.task('interval', id='autoPiccraw', seconds=3600, misfire_grace_time=900)
+def autoPiccraw():
+    getPic()
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
+def getPic():
+    users = list(db.userInfo.find({}, {'_id': False}))
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+
+    for one in users:
+        name = one['name']
+        url = one['url']
+        data = requests.get(url, headers=headers)
+        soup = BeautifulSoup(data.text, 'html.parser')
+        image = soup.select_one('meta[property="og:image"]')['content']
+
+        imgUrl = image
+
+        # urlretrieve는 다운로드 함수
+        urllib.request.urlretrieve(imgUrl, "static/images/" + name + '.jpg')
+
+        db.userInfo.update_one({'name': name}, {'$set': {'pic': '../static/images/' + name + '.jpg'}})
 
 
 """
@@ -140,13 +165,12 @@ def titleCrawling():
                     detail_title = titles.select_one('strong.txt_title')
                     newlist.append({'name': tempname, 'title': detail_title.text})
 
-            if sys.getsizeof(title) < 100:
+            if sys.getsizeof(title) < 70:
                 title = title.select('li')
                 for titles in title:
                     detail_title = titles.select_one('div.box_contents > a')
                     newlist.append({'name': tempname, 'title': detail_title.text})
 
-            if sys.getsizeof(title) < 100:
 
         # 크롤링 페이지를 켜기 위한 딜레이
         time.sleep(0.5)
