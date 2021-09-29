@@ -173,7 +173,6 @@ def titleCrawling():
         db.userStack.delete_one({'name' : tempname})
         db.userStack.insert_one({'name' : tempname})
 
-
 #검색
 @app.route('/search', methods=['GET'])
 def search():
