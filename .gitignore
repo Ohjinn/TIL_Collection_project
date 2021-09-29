@@ -9,6 +9,9 @@ __pycache__/
 # pychram
 .idea/
 
+# Crawling
+*.jpg
+
 # Distribution / packaging
 .Python
 build/
