@@ -4,6 +4,7 @@ import requests
 import time
 from bs4 import BeautifulSoup
 from flask_apscheduler import APScheduler
+import urllib
 
 class Config:
     SCHEDULER_API_ENABLED = True
@@ -25,9 +26,33 @@ scheduler.start()
 def autocraw():
     titleCrawling()
 
+@scheduler.task('interval', id='autoPiccraw', seconds=3600, misfire_grace_time=900)
+def autoPiccraw():
+    getPic()
+    print("영웅출현")
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
+def getPic():
+    users = list(db.userInfo.find({}, {'_id': False}))
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+
+    for one in users:
+        name = one['name']
+        url = one['url']
+        data = requests.get(url, headers=headers)
+        soup = BeautifulSoup(data.text, 'html.parser')
+        image = soup.select_one('meta[property="og:image"]')['content']
+
+        imgUrl = image
+
+        # urlretrieve는 다운로드 함수
+        urllib.request.urlretrieve(imgUrl, "static/images/" + name + '.jpg')
+
+        db.userInfo.update_one({'name': name}, {'$set': {'pic': '../static/images/' + name + '.jpg'}})
 
 
 """
