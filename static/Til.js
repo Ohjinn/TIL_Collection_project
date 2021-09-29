@@ -1,8 +1,23 @@
+// 부트스트랩
+
 $(document).ready(function () {
     getCards()
     showLocation();
 
 });
+
+window.addEventListener('load', () => {
+    if (window.navigator.geolocation) {
+        window.navigator.geolocation.getCurrentPosition(showLocation, showError)
+    }
+})
+
+var myModal = document.getElementById('myModal')
+
+myModal.addEventListener('showns.bs.modal', function (){
+    myModal.focus()
+})
+
 
 function getCards(){
     $.ajax({
@@ -71,11 +86,7 @@ function showError(position) {
     alert("위치 정보를 얻을 수 없습니다.")
 }
 
-window.addEventListener('load', () => {
-    if (window.navigator.geolocation) {
-        window.navigator.geolocation.getCurrentPosition(showLocation, showError)
-    }
-})
+
 
 function makeVelogCard(cards){
     let tempHtml = `<div class="card hotboxs">
@@ -84,6 +95,7 @@ function makeVelogCard(cards){
                             <h5 class="card-title">${cards['name']}</h5>
                             <p class="card-text">${cards['url']}</p>
                             <a href="${cards['url']}" class="btn btn-dark">바로가기</a>
+                            <button type="button" onclick="getTarget('${cards['name']}')" data-toggle="modal" data-target="#myModal" class="btn btn-dark">리뷰달기</button>
                         </div>
                     </div>`
     $("#velog-box").append(tempHtml);
@@ -96,6 +108,7 @@ function makeTistoryCard(cards){
                             <h5 class="card-title">${cards['name']}</h5>
                             <p class="card-text">${cards['url']}</p>
                             <a href="${cards['url']}" class="btn btn-dark">바로가기</a>
+                            <button type="button"  data-toggle="modal" data-target="#myModal" class="btn btn-dark">리뷰달기</button>
                         </div>
                     </div>`
     $("#tistory-box").append(tempHtml);
@@ -120,11 +133,40 @@ function search() {
                                         <a href="${response['url']}" class="btn btn-dark">바로가기</a>
                                     </div>
                                 </div>
-                                <button onclick="window.location.href = '/'" type="button">메인으로</button>`
+                                <button onclick="window.location.href = '/'" class="btn btn-dark" type="button">메인으로</button>`
                 $("#flush").append(tempHtml);
             }
         }
     });
+}
+
+//리뷰
+function getreview() {
+    let user = $('#user').val()
+    let review = $('#review').val()
+
+    $.ajax({
+        type: "POST",
+        url: "/review",
+        data: {user_give:user,review_give:review},
+        success: function (response) {
+            alert(response["msg"]);
+            window.location.reload();
+
+        }
+    })
+}
+
+function getTarget(name) {
+
+    alert(name)
+    // $.ajax({
+    //     type: "POST",
+    //     url: "/review",
+    //     data: {target_give: name},
+    //     success: function (response) {
+    //     }
+    // })
 }
 
 function reset() {
