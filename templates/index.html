@@ -28,7 +28,7 @@
             crossorigin="anonymous"></script>
 
     <!-- 구글폰트 -->
-    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='Til.css') }}">
     <script type="text/javascript" src="{{ url_for('static', filename='Til.js') }}"></script>
 
@@ -45,6 +45,7 @@
 </head>
 <body>
 <div class="wrap">
+    <div class ="wrapp">
     <!-- 로고 이미지 -->
     <div class="banner" onclick="window.location.href = '/'">
     </div>
@@ -61,17 +62,17 @@
     <div class="input-group mb-3 searchbar">
         <input id="searchtxt" type="text" class="form-control" placeholder="이름을 입력하세요" style="text-align: center;">
         <div class="input-group-append">
-            <button onclick="search()" id="searchButton" class="btn btn-info" type="submit">검색</button>
+            <button onclick="search()" id="searchButton" class="btn btn-warning" type="submit">검색</button>
         </div>
 
     </div>
     <!-- 블로그 카드 띄우기 -->
     <div id="flush">
-        <div type="button" class="btn btn-info btn-lg" style="margin: 10px;">Velog</div>
+        <div onclick="velClick()" type="button" class="btn btn-info btn-lg" style="margin: 10px;">Velog</div>
         <div id="velog-box" class="row">
 
         </div>
-        <div type="button" class="btn btn-info btn-lg" style="margin: 10px;">Tistory</div>
+        <div onclick="tisClick()" pe="button" class="btn btn-info btn-lg" style="margin: 10px;">Tistory</div>
         <div id="tistory-box" class="row">
 
         </div>
@@ -103,10 +104,11 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-                <button type="button" class="btn btn-primary">작성 완료</button>
+                <button type="button" class="btn btn-warning">작성 완료</button>
             </div>
         </div>
     </div>
+</div>
 </div>
 </body>
 </html>
