@@ -202,6 +202,8 @@ def titleCrawling():
 def search():
     txt = request.args.get("txt")
     userdb = db.userInfo.find_one({'name':txt},{'_id':False})
+    if userdb is None:
+        userdb ='notthing'
     return jsonify(userdb)
 
 #리뷰
