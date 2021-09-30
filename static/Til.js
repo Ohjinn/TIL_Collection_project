@@ -1,24 +1,36 @@
 $(document).ready(function () {
-    getCards()
+    getCards();
     showLocation();
-
 });
 
-function getCards(){
+window.addEventListener('load', () => {
+    if (window.navigator.geolocation) {
+        window.navigator.geolocation.getCurrentPosition(showLocation, showError)
+    }
+})
+
+var myModal = document.getElementById('myModal')
+
+myModal.addEventListener('showns.bs.modal', function () {
+    myModal.focus()
+})
+
+
+function getCards() {
     $.ajax({
-        type : "GET",
-        url : `/sorted`,
-        data : {},
-        success:function (response){
+        type: "GET",
+        url: `/sorted`,
+        data: {},
+        success: function (response) {
             velogCards = response['velogcards']
             tistoryCards = response['tistorycards']
             $("#velog-box").empty();
-            velogCards.forEach(function (velogCards){
+            velogCards.forEach(function (velogCards) {
                 makeVelogCard(velogCards);
             });
 
             $("#tistory-box").empty();
-            tistoryCards.forEach(function(tistoryCards){
+            tistoryCards.forEach(function (tistoryCards) {
                 makeTistoryCard(tistoryCards)
             });
 
@@ -27,6 +39,7 @@ function getCards(){
 }
 
 function showLocation(position) {   // 위치 정보 호출 성공시
+    console.log('날씨 함수 호출!!!')  // 이하 구문 실행 안됨
     let latitude = position.coords.latitude   // 위도
     let longitude = position.coords.longitude  // 경도
     let apiKey = '97329c7c315676010b49d9b9dc79185c';
@@ -71,11 +84,6 @@ function showError(position) {
     alert("위치 정보를 얻을 수 없습니다.")
 }
 
-window.addEventListener('load', () => {
-    if (window.navigator.geolocation) {
-        window.navigator.geolocation.getCurrentPosition(showLocation, showError)
-    }
-})
 
 function makeVelogCard(cards){
     let tempHtml = `<div class="card hotboxs">
@@ -83,7 +91,8 @@ function makeVelogCard(cards){
                         <div class="card-body">
                             <h5 class="card-title">${cards['name']}</h5>
                             <p class="card-text">${cards['url']}</p>
-                            <a href="${cards['url']}" class="btn btn-dark">바로가기</a>
+                            <a href="#" onclick="window.open('${cards['url']}', 'new')" class="btn btn-dark">바로가기</a>
+                            <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-dark">리뷰달기</button>
                         </div>
                     </div>`
     $("#velog-box").append(tempHtml);
@@ -95,11 +104,13 @@ function makeTistoryCard(cards){
                         <div class="card-body">
                             <h5 class="card-title">${cards['name']}</h5>
                             <p class="card-text">${cards['url']}</p>
-                            <a href="${cards['url']}" class="btn btn-dark">바로가기</a>
+                            <a href="#" onclick="window.open('${cards['url']}', 'new')" class="btn btn-dark">바로가기</a>
+                            <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-dark">리뷰달기</button>
                         </div>
                     </div>`
     $("#tistory-box").append(tempHtml);
 }
+
 
 //검색
 function search() {
@@ -113,18 +124,47 @@ function search() {
 
             if (txt == response.name) {
                 let tempHtml = `<div class="card hotboxs">
-                                    <img class="card-img-top card-rows" src="${response['pic']}" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h5 class="card-title">${response['name']}</h5>
-                                        <p class="card-text">${response['url']}</p>
-                                        <a href="${response['url']}" class="btn btn-dark">바로가기</a>
-                                    </div>
-                                </div>
-                                <button onclick="window.location.href = '/'" type="button">메인으로</button>`
+                        <img class="card-img-top card-rows" src="${response['pic']}" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">${response['name']}</h5>
+                            <p class="card-text">${response['url']}</p>
+                            <a href="${response['url']}" class="btn btn-dark">바로가기</a>
+                        </div>
+                    </div>
+                    <button onclick="window.location.href = '/'" type="button">메인으로</button>`
                 $("#flush").append(tempHtml);
             }
         }
     });
+}
+
+//리뷰
+function getreview() {
+    let user = $('#user').val()
+    let review = $('#review').val()
+
+    $.ajax({
+        type: "POST",
+        url: "/review",
+        data: {user_give:user,review_give:review},
+        success: function (response) {
+            alert(response["msg"]);
+            window.location.reload();
+
+        }
+    })
+}
+
+function getTarget(name) {
+
+    alert(name)
+    // $.ajax({
+    //     type: "POST",
+    //     url: "/review",
+    //     data: {target_give: name},
+    //     success: function (response) {
+    //     }
+    // })
 }
 
 function reset() {

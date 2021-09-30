@@ -26,23 +26,23 @@
 }
 
 .weather {
-    text-align: center;
     margin: 30px 0px 20px 0px;
     font-size: 20px;
 }
 
 .weather_title {
+    text-align: right;
     float: left;
-    width: 40%;
+    width: 60%;
     height: 70px;
     padding-top: 10px;
 }
 
-.weather_temp, .weather_img {
+.weather_temp{
+    text-align: left;
     float: left;
-    width: 30%;
+    width: 40%;
     height: 70px;
-    padding-top: 10px;
 }
 
 .searchbar {
