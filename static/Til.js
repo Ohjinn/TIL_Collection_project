@@ -38,6 +38,24 @@ function getCards() {
     })
 }
 
+
+function velClick() {
+    if ($("#velog-box").is(":visible")) {
+        $("#velog-box").hide();
+    } else { $("#velog-box").show();
+    }
+}
+
+
+function tisClick() {
+    if ($("#tistory-box").is(":visible")) {
+        $("#tistory-box").hide();
+    } else {
+        $("#tistory-box").show();
+    }
+}
+
+
 function showLocation(position) {   // 위치 정보 호출 성공시
     console.log('날씨 함수 호출!!!')  // 이하 구문 실행 안됨
     let latitude = position.coords.latitude   // 위도
@@ -87,12 +105,14 @@ function showError(position) {
 
 function makeVelogCard(cards){
     let tempHtml = `<div class="card hotboxs">
-                        <img class="card-img-top card-rows" src="${cards['pic']}" alt="Card image cap">
+                        <img class="card-img-top card-rows" height="200" src="${cards['pic']}" alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title">${cards['name']}</h5>
                             <p class="card-text">${cards['url']}</p>
-                            <a href="#" onclick="window.open('${cards['url']}', 'new')" class="btn btn-dark">바로가기</a>
-                            <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-dark">리뷰달기</button>
+                            <div class="d-flex justify-content-center">
+                            <a href="#" onclick="window.open('${cards['url']}', 'new')" class="btn btn-warning st">바로가기</a>
+                            <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-warning st">리뷰달기</button>
+                        </div>
                         </div>
                     </div>`
     $("#velog-box").append(tempHtml);
@@ -100,12 +120,14 @@ function makeVelogCard(cards){
 
 function makeTistoryCard(cards){
     let tempHtml = `<div class="card hotboxs">
-                        <img class="card-img-top card-rows" src="${cards['pic']}" alt="Card image cap">
+                        <img class="card-img-top card-rows" height="200" src="${cards['pic']}" alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title">${cards['name']}</h5>
                             <p class="card-text">${cards['url']}</p>
-                            <a href="#" onclick="window.open('${cards['url']}', 'new')" class="btn btn-dark">바로가기</a>
-                            <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-dark">리뷰달기</button>
+                            <div class="d-flex justify-content-center">
+                            <a href="#" onclick="window.open('${cards['url']}', 'new')" class="btn btn-warning st">바로가기</a>
+                            <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-warning st">리뷰달기</button>
+                        </div>
                         </div>
                     </div>`
     $("#tistory-box").append(tempHtml);
