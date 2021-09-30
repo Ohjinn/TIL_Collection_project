@@ -8,17 +8,16 @@
     padding: 15px;
     background-color: lightgoldenrodyellow;
     min-height: 300vh;
-    border-radius:40px;
-
+    border-radius: 40px;
 }
 
 .wrapp {
-     width: 1100px;
+    width: 1100px;
     margin: auto;
     padding: 15px;
     background-color: rgba(255, 255, 254, 1);
     min-height: 300vh;
-    border-radius:40px;
+    border-radius: 40px;
 }
 
 .banner {
